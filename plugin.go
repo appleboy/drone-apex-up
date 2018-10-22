@@ -23,6 +23,12 @@ type (
 
 // Exec executes the plugin.
 func (p *Plugin) Exec() error {
+	if p.Config.AccessKey != "" {
+		os.Setenv("AWS_ACCESS_KEY_ID", p.Config.AccessKey)
+	}
+	if p.Config.SecretKey != "" {
+		os.Setenv("AWS_SECRET_ACCESS_KEY", p.Config.SecretKey)
+	}
 	commands := []*exec.Cmd{
 		p.versionCommand(),
 	}
