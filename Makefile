@@ -49,12 +49,6 @@ test-vendor: $(GOVENDOR)
 
 	$(GOVENDOR) status || exit 1
 
-errcheck:
-	@which errcheck > /dev/null; if [ $$? -ne 0 ]; then \
-		$(GO) get -u github.com/kisielk/errcheck; \
-	fi
-	errcheck $(PACKAGES)
-
 lint:
 	@which golint > /dev/null; if [ $$? -ne 0 ]; then \
 		$(GO) get -u golang.org/x/lint/golint; \
