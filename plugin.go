@@ -12,6 +12,7 @@ type (
 	Config struct {
 		AccessKey string
 		SecretKey string
+		Directory string
 		Stage     []string
 	}
 
@@ -54,10 +55,17 @@ func (p *Plugin) deployCommand(stage ...string) []*exec.Cmd {
 	var cmds = []*exec.Cmd{}
 
 	for _, v := range stage {
-		args := []string{
+		args := []string{}
+
+		if p.Config.Directory != "" {
+			args = append(args, "--chdir="+p.Config.Directory)
+		}
+
+		args = append(
+			args,
 			"deploy",
 			v,
-		}
+		)
 
 		cmds = append(cmds, exec.Command(
 			"up",

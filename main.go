@@ -36,6 +36,11 @@ func main() {
 			Usage:  "AWS SECRET KEY",
 			EnvVar: "PLUGIN_SECRET_KEY,AWS_SECRET_ACCESS_KEY",
 		},
+		cli.StringFlag{
+			Name:   "chdir",
+			Usage:  "Change working directory",
+			EnvVar: "PLUGIN_DIRECTORY",
+		},
 		cli.StringSliceFlag{
 			Name:   "stage",
 			Usage:  "Target stage name",
@@ -68,6 +73,7 @@ func run(c *cli.Context) error {
 		Config: Config{
 			AccessKey: c.String("access-key"),
 			SecretKey: c.String("secret-key"),
+			Directory: c.String("chdir"),
 			Stage:     c.StringSlice("stage"),
 		},
 	}
