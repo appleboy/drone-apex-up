@@ -33,9 +33,7 @@ func (p *Plugin) Exec() error {
 		p.versionCommand(),
 	}
 
-	for _, v := range p.Config.Stage {
-		commands = append(commands, p.deployCommand(v))
-	}
+	commands = append(commands, p.deployCommand(p.Config.Stage...)...)
 
 	for _, cmd := range commands {
 		cmd.Stdout = os.Stdout
@@ -52,16 +50,22 @@ func (p *Plugin) Exec() error {
 	return nil
 }
 
-func (p *Plugin) deployCommand(stage string) *exec.Cmd {
-	args := []string{
-		"deploy",
-		stage,
+func (p *Plugin) deployCommand(stage ...string) []*exec.Cmd {
+	var cmds = []*exec.Cmd{}
+
+	for _, v := range stage {
+		args := []string{
+			"deploy",
+			v,
+		}
+
+		cmds = append(cmds, exec.Command(
+			"up",
+			args...,
+		))
 	}
 
-	return exec.Command(
-		"up",
-		args...,
-	)
+	return cmds
 }
 
 func (p *Plugin) versionCommand() *exec.Cmd {
