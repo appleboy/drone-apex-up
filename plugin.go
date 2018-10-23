@@ -13,6 +13,7 @@ type (
 		AccessKey string
 		SecretKey string
 		Directory string
+		Verbose   bool
 		Stage     []string
 	}
 
@@ -59,6 +60,10 @@ func (p *Plugin) deployCommand(stage ...string) []*exec.Cmd {
 
 		if p.Config.Directory != "" {
 			args = append(args, "--chdir="+p.Config.Directory)
+		}
+
+		if p.Config.Verbose {
+			args = append(args, "-v")
 		}
 
 		args = append(

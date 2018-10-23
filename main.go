@@ -47,6 +47,11 @@ func main() {
 			EnvVar: "PLUGIN_STAGE",
 			Value:  &cli.StringSlice{"staging"},
 		},
+		cli.BoolTFlag{
+			Name:   "verbose",
+			Usage:  "Enable verbose log output.",
+			EnvVar: "PLUGIN_VERBOSE",
+		},
 	}
 
 	app.Version = Version
@@ -75,6 +80,7 @@ func run(c *cli.Context) error {
 			SecretKey: c.String("secret-key"),
 			Directory: c.String("chdir"),
 			Stage:     c.StringSlice("stage"),
+			Verbose:   c.Bool("verbose"),
 		},
 	}
 
