@@ -40,6 +40,7 @@ func main() {
 			Name:   "stage",
 			Usage:  "Target stage name",
 			EnvVar: "PLUGIN_STAGE",
+			Value:  &cli.StringSlice{"staging"},
 		},
 	}
 
