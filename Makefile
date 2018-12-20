@@ -139,7 +139,7 @@ coverage:
 	sed -i '/main.go/d' coverage.txt
 
 clean:
-	$(GO) clean -x -i ./...
+	$(GO) clean -modcache -cache -x -i ./...
 	rm -rf coverage.txt $(EXECUTABLE) $(DIST)
 
 version:

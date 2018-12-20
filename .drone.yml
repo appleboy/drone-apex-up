@@ -13,6 +13,8 @@ pipeline:
     image: golang:1.11
     pull: true
     group: testing
+    environment:
+      - GO111MODULE=on
     commands:
       - make vet
       - make lint
@@ -21,20 +23,17 @@ pipeline:
     image: golang:1.11
     pull: true
     group: testing
+    environment:
+      - GO111MODULE=on
     commands:
       - make misspell-check
-
-  vendor:
-    image: golang:1.11
-    pull: true
-    group: testing
-    commands:
-      - make test-vendor
 
   test:
     image: golang:1.11
     pull: true
     group: testing
+    environment:
+      - GO111MODULE=on
     commands:
       - make test
       - make coverage
@@ -51,6 +50,8 @@ pipeline:
     image: golang:1.11
     pull: true
     group: build
+    environment:
+      - GO111MODULE=on
     commands:
       - make build_linux_amd64
 
@@ -58,6 +59,8 @@ pipeline:
     image: golang:1.11
     pull: true
     group: build
+    environment:
+      - GO111MODULE=on
     commands:
       - make build_linux_i386
 
@@ -65,6 +68,8 @@ pipeline:
     image: golang:1.11
     pull: true
     group: build
+    environment:
+      - GO111MODULE=on
     commands:
       - make build_linux_arm64
 
@@ -72,6 +77,8 @@ pipeline:
     image: golang:1.11
     pull: true
     group: build
+    environment:
+      - GO111MODULE=on
     commands:
       - make build_linux_arm
 
