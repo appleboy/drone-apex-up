@@ -227,10 +227,10 @@ depends_on:
 kind: secret
 
 external_data:
-  host:
+  username:
     path: drone/data/docker
     name: username
-  username:
+  password:
     path: drone/data/docker
     name: password
 
