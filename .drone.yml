@@ -225,13 +225,16 @@ depends_on:
 
 ---
 kind: secret
+name: username
+get:
+  path: drone/data/docker
+  name: username
 
-external_data:
-  username:
-    path: drone/data/docker
-    name: username
-  password:
-    path: drone/data/docker
-    name: password
+---
+kind: secret
+name: password
+get:
+  path: drone/data/docker
+  name: password
 
 ...
