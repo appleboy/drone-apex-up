@@ -8,13 +8,11 @@ DEPLOY_ACCOUNT := appleboy
 DEPLOY_IMAGE := $(EXECUTABLE)
 
 TARGETS ?= linux darwin windows
-PACKAGES ?= $(shell $(GO) list ./... | grep -v /vendor/)
-GOFILES := $(shell find . -name "*.go" -type f -not -path "./vendor/*")
+PACKAGES ?= $(shell $(GO) list ./...)
 SOURCES ?= $(shell find . -name "*.go" -type f)
 TAGS ?=
-LDFLAGS ?= -X 'main.Version=$(VERSION)' -X 'main.BuildNum=$(DRONE_BUILD_NUMBER)'
+LDFLAGS ?= -X 'main.Version=$(VERSION)'
 TMPDIR := $(shell mktemp -d 2>/dev/null || mktemp -d -t 'tempdir')
-GOVENDOR := $(GOPATH)/bin/govendor
 
 ifneq ($(shell uname), Darwin)
 	EXTLDFLAGS = -extldflags "-static" $(null)
@@ -31,47 +29,34 @@ endif
 all: build
 
 fmt:
-	$(GOFMT) -w $(GOFILES)
+	$(GOFMT) -w $(SOURCES)
 
 vet:
 	$(GO) vet $(PACKAGES)
-
-$(GOVENDOR):
-	$(GO) get -u github.com/kardianos/govendor
-
-.PHONY: test-vendor
-test-vendor: $(GOVENDOR)
-	$(GOVENDOR) list +unused | tee "$(TMPDIR)/wc-gitea-unused"
-	[ $$(cat "$(TMPDIR)/wc-gitea-unused" | wc -l) -eq 0 ] || echo "Warning: /!\\ Some vendor are not used /!\\"
-
-	$(GOVENDOR) list +outside | tee "$(TMPDIR)/wc-gitea-outside"
-	[ $$(cat "$(TMPDIR)/wc-gitea-outside" | wc -l) -eq 0 ] || exit 1
-
-	$(GOVENDOR) status || exit 1
 
 lint:
 	@hash revive > /dev/null 2>&1; if [ $$? -ne 0 ]; then \
 		$(GO) get -u github.com/mgechev/revive; \
 	fi
-	revive -config .revive.toml -exclude=./vendor/... ./... || exit 1
+	revive -config .revive.toml ./... || exit 1
 
 .PHONY: misspell-check
 misspell-check:
 	@hash misspell > /dev/null 2>&1; if [ $$? -ne 0 ]; then \
 		$(GO) get -u github.com/client9/misspell/cmd/misspell; \
 	fi
-	misspell -error $(GOFILES)
+	misspell -error $(SOURCES)
 
 .PHONY: misspell
 misspell:
 	@hash misspell > /dev/null 2>&1; if [ $$? -ne 0 ]; then \
 		$(GO) get -u github.com/client9/misspell/cmd/misspell; \
 	fi
-	misspell -w $(GOFILES)
+	misspell -w $(SOURCES)
 
 .PHONY: fmt-check
 fmt-check:
-	@diff=$$($(GOFMT) -d $(GOFILES)); \
+	@diff=$$($(GOFMT) -d $(SOURCES)); \
 	if [ -n "$$diff" ]; then \
 		echo "Please run 'make fmt' and commit the result:"; \
 		echo "$${diff}"; \
@@ -79,10 +64,7 @@ fmt-check:
 	fi;
 
 test: fmt-check
-	for PKG in $(PACKAGES); do $(GO) test -cover -coverprofile $$GOPATH/src/$$PKG/coverage.txt $$PKG || exit 1; done;
-
-html:
-	$(GO) tool cover -html=coverage.txt
+	@$(GO) test -v -cover -coverprofile coverage.txt $(PACKAGES) && echo "\n==>\033[32m Ok\033[m\n" || exit 1
 
 install: $(SOURCES)
 	$(GO) install -v -tags '$(TAGS)' -ldflags '$(EXTLDFLAGS)-s -w $(LDFLAGS)'
@@ -101,7 +83,7 @@ release-build:
 	@which gox > /dev/null; if [ $$? -ne 0 ]; then \
 		$(GO) get -u github.com/mitchellh/gox; \
 	fi
-	gox -os="$(TARGETS)" -arch="amd64 386" -tags="$(TAGS)" -ldflags="-s -w $(LDFLAGS)" -output="$(DIST)/binaries/$(EXECUTABLE)-$(VERSION)-{{.OS}}-{{.Arch}}"
+	gox -os="$(TARGETS)" -tags="$(TAGS)" -ldflags="-s -w $(LDFLAGS)" -output="$(DIST)/binaries/$(EXECUTABLE)-$(VERSION)-{{.OS}}-{{.Arch}}"
 
 release-copy:
 	$(foreach file,$(wildcard $(DIST)/binaries/$(EXECUTABLE)-*),cp $(file) $(DIST)/release/$(notdir $(file));)
@@ -124,7 +106,7 @@ build_linux_arm:
 docker_image:
 	docker build -t $(DEPLOY_ACCOUNT)/$(DEPLOY_IMAGE) .
 
-docker: static_build docker_image
+docker: docker_image
 
 docker_deploy:
 ifeq ($(tag),)
@@ -139,7 +121,7 @@ coverage:
 	sed -i '/main.go/d' coverage.txt
 
 clean:
-	$(GO) clean -modcache -cache -x -i ./...
+	$(GO) clean -x -i ./...
 	rm -rf coverage.txt $(EXECUTABLE) $(DIST)
 
 version:
