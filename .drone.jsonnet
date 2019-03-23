@@ -13,4 +13,6 @@ local name = 'drone-apex-up';
     // 'linux-arm',
     'release-binary',
   ]),
+  pipeline.secret('username', 'drone/data/docker', 'username'),
+  pipeline.secret('password', 'drone/data/docker', 'password'),
 ]

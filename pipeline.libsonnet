@@ -277,5 +277,14 @@
   signature(key):: {
     kind: 'signature',
     hmac: key,
-  }
+  },
+
+  secret(name, path, key):: {
+    kind: 'secret',
+    name: name,
+    get: {
+      path: path,
+      name: key,
+    },
+  },
 }
