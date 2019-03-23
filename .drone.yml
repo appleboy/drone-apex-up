@@ -226,6 +226,7 @@ depends_on:
 ---
 kind: secret
 name: docker_username
+
 get:
   path: drone/data/docker
   name: username
@@ -233,6 +234,7 @@ get:
 ---
 kind: secret
 name: docker_password
+
 get:
   path: drone/data/docker
   name: password
