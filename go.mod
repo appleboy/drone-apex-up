@@ -1,6 +1,8 @@
 module github.com/appleboy/drone-apex-up
 
+go 1.12
+
 require (
-	github.com/rs/zerolog v0.0.0-20180928011143-8e36cbf881d3
-	github.com/urfave/cli v0.0.0-20180821064027-934abfb2f102
+	github.com/rs/zerolog v1.13.0
+	github.com/urfave/cli v1.20.0
 )
