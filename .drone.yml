@@ -214,6 +214,19 @@ steps:
     url:
       from_secret: microbadger_url
 
+- name: discord
+  pull: always
+  image: appleboy/drone-discord
+  settings:
+    webhook_id:
+      from_secret: discord_webhook_id
+    webhook_token:
+      from_secret: discord_webhook_token
+  when:
+    status:
+    - success
+    - failure
+
 trigger:
   ref:
   - refs/heads/master
@@ -246,5 +259,21 @@ name: api_key
 get:
   path: drone/data/github
   name: api_key
+
+---
+kind: secret
+name: discord_webhook_id
+
+get:
+  path: drone/data/discord
+  name: webhook_id
+
+---
+kind: secret
+name: discord_webhook_token
+
+get:
+  path: drone/data/discord
+  name: webhook_token
 
 ...

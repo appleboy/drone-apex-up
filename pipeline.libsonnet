@@ -264,6 +264,18 @@
           url: { 'from_secret': 'microbadger_url' },
         },
       },
+      {
+        name: 'discord',
+        image: 'appleboy/drone-discord',
+        pull: 'always',
+        settings: {
+          webhook_id: { 'from_secret': 'discord_webhook_id' },
+          webhook_token: { 'from_secret': 'discord_webhook_token' },
+        },
+        when: {
+          status: ['success', 'failure'],
+        },
+      },
     ],
     depends_on: depends_on,
     trigger: {

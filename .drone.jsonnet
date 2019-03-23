@@ -16,4 +16,6 @@ local name = 'drone-apex-up';
   pipeline.secret('docker_username', 'drone/data/docker', 'username'),
   pipeline.secret('docker_password', 'drone/data/docker', 'password'),
   pipeline.secret('api_key', 'drone/data/github', 'api_key'),
+  pipeline.secret('discord_webhook_id', 'drone/data/discord', 'webhook_id'),
+  pipeline.secret('discord_webhook_token', 'drone/data/discord', 'webhook_token'),
 ]
