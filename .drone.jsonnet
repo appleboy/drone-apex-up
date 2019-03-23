@@ -15,4 +15,5 @@ local name = 'drone-apex-up';
   ]),
   pipeline.secret('docker_username', 'drone/data/docker', 'username'),
   pipeline.secret('docker_password', 'drone/data/docker', 'password'),
+  pipeline.secret('api_key', 'drone/data/github', 'api_key'),
 ]

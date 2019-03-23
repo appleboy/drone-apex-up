@@ -173,7 +173,7 @@ steps:
   image: plugins/github-release
   settings:
     api_key:
-      from_secret: github_release_api_key
+      from_secret: api_key
     files:
     - "dist/release/*"
   when:
@@ -238,5 +238,13 @@ name: docker_password
 get:
   path: drone/data/docker
   name: password
+
+---
+kind: secret
+name: api_key
+
+get:
+  path: drone/data/github
+  name: api_key
 
 ...

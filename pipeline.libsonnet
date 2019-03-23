@@ -220,7 +220,7 @@
         pull: 'always',
         settings: {
           files: [ 'dist/release/*' ],
-          api_key: { 'from_secret': 'github_release_api_key' },
+          api_key: { 'from_secret': 'api_key' },
         },
         when: {
           event: [ 'tag' ],
