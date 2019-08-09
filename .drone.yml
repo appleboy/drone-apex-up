@@ -48,10 +48,6 @@ steps:
   - make coverage
   environment:
     GO111MODULE: on
-    WEBHOOK_ID:
-      from_secret: webhook_id
-    WEBHOOK_TOKEN:
-      from_secret: webhook_token
   volumes:
   - name: gopath
     path: /go
@@ -80,7 +76,7 @@ steps:
   pull: always
   image: golang:1.12
   commands:
-  - "go build -v -ldflags '-X main.build=${DRONE_BUILD_NUMBER}' -a -o release/linux/amd64/drone-apex-up"
+  - go build -v -ldflags '-X main.build=${DRONE_BUILD_NUMBER}' -a -o release/linux/amd64/drone-apex-up
   environment:
     CGO_ENABLED: 0
     GO111MODULE: on
@@ -93,7 +89,7 @@ steps:
   pull: always
   image: golang:1.12
   commands:
-  - "go build -v -ldflags '-X main.version=${DRONE_TAG##v} -X main.build=${DRONE_BUILD_NUMBER}' -a -o release/linux/amd64/drone-apex-up"
+  - go build -v -ldflags '-X main.version=${DRONE_TAG##v} -X main.build=${DRONE_BUILD_NUMBER}' -a -o release/linux/amd64/drone-apex-up
   environment:
     CGO_ENABLED: 0
     GO111MODULE: on
@@ -142,8 +138,8 @@ steps:
 trigger:
   ref:
   - refs/heads/master
-  - "refs/pull/**"
-  - "refs/tags/**"
+  - refs/pull/**
+  - refs/tags/**
 
 depends_on:
 - testing
@@ -175,14 +171,14 @@ steps:
     api_key:
       from_secret: api_key
     files:
-    - "dist/release/*"
+    - dist/release/*
   when:
     event:
     - tag
 
 trigger:
   ref:
-  - "refs/tags/**"
+  - refs/tags/**
 
 depends_on:
 - testing
@@ -230,7 +226,7 @@ steps:
 trigger:
   ref:
   - refs/heads/master
-  - "refs/tags/**"
+  - refs/tags/**
 
 depends_on:
 - linux-amd64
