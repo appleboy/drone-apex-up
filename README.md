@@ -1,7 +1,7 @@
 # drone-apex-up
 
 [![GoDoc](https://godoc.org/github.com/appleboy/drone-apex-up?status.svg)](https://godoc.org/github.com/appleboy/drone-apex-up)
-[![Build Status](https://drone.ggz.tw/api/badges/appleboy/drone-apex-up/status.svg)](https://drone.ggz.tw/appleboy/drone-apex-up)
+[![Build Status](https://cloud.drone.io/api/badges/appleboy/drone-apex-up/status.svg)](https://cloud.drone.io/appleboy/drone-apex-up)
 [![codecov](https://codecov.io/gh/appleboy/drone-apex-up/branch/master/graph/badge.svg)](https://codecov.io/gh/appleboy/drone-apex-up)
 [![Go Report Card](https://goreportcard.com/badge/github.com/appleboy/drone-apex-up)](https://goreportcard.com/report/github.com/appleboy/drone-apex-up)
 [![Docker Pulls](https://img.shields.io/docker/pulls/appleboy/drone-apex-up.svg)](https://hub.docker.com/r/appleboy/drone-apex-up/)
